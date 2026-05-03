@@ -1,0 +1,8 @@
+*.ts
+!*.d.ts
+node_modules/
+tsconfig.json
+.npmignore
+.gitignore
+.git/
+assets/
