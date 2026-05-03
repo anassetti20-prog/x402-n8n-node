@@ -1,5 +1,5 @@
 {
-  "name": "n8n-nodes-x402-api",
+  "name": "@anassetti20-prog/n8n-nodes-x402-api",
   "version": "1.0.0",
   "description": "n8n community node for x402 API — pay-per-use AI services via USDC micropayments on Base. Halal Screening, Web Search, Code Analysis, Data Processing, Translation, Text Generation.",
   "keywords": [
