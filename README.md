@@ -1,6 +1,6 @@
-# @anassetti20-prog/n8n-nodes-x402-api
+# @anas-setti/n8n-nodes-x402-api
 
-[![npm version](https://img.shields.io/npm/v/@anassetti20-prog%2Fn8n-nodes-x402-api.svg)](https://www.npmjs.com/package/@anassetti20-prog/n8n-nodes-x402-api)
+[![npm version](https://img.shields.io/npm/v/@anas-setti%2Fn8n-nodes-x402-api.svg)](https://www.npmjs.com/package/@anas-setti/n8n-nodes-x402-api)
 
 **Pay-per-use AI services via USDC micropayments on Base chain.**
 An n8n community node for the x402 API — a collection of utility AI tools you pay for per request with USDC.
@@ -40,13 +40,13 @@ An n8n community node for the x402 API — a collection of utility AI tools you 
 ### Via n8n Community Nodes
 
 1. Go to **Settings → Community Nodes** in your n8n instance
-2. Enter `@anassetti20-prog/n8n-nodes-x402-api` as the package name
+2. Enter `@anas-setti/n8n-nodes-x402-api` as the package name
 3. Click **Install**
 
 ### Via npm
 
 ```bash
-npm install @anassetti20-prog/n8n-nodes-x402-api
+npm install @anas-setti/n8n-nodes-x402-api
 ```
 
 ---
