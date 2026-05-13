@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+venv/
+.env
+.wallet_key.enc
+.env.enc
+.encryption_key.secure
+*.egg-info/
+dist/
+build/venv/
+.env
+.env

@@ -1,0 +1,55 @@
+# x402 Multi-Service API
+
+> Pay-per-request AI services via USDC micropayments on Base blockchain.
+> Server: http://178.105.35.170:8080
+> Wallet: 0xeB262928D55A92f2EAac946807CeC4d80E9EdD6B (Base)
+> Token: USDC (0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913)
+
+## Endpoints
+
+- GET / -> Service overview and documentation
+- GET /health -> Health check
+- GET /wallet -> Wallet info
+- GET /list -> Halal coin database
+- GET /static/x402-halal-api.tar.gz -> Download source code
+- GET /v1/services -> All x402 services with pricing
+
+### x402 Payment Services (requires X-402-Proof header)
+
+- GET /halal-check?symbol=BTC -> Halal Screening ($0.01)
+- POST /v1/search?q=query -> Web Search ($0.01)
+- POST /v1/analyze-code -> Code Analysis ($0.05)
+- POST /v1/process-data -> Data Processing ($0.02)
+- POST /v1/translate -> Translation ($0.01)
+- POST /v1/generate-text -> Text Generation ($0.02)
+
+## Authentication
+
+Send USDC on Base chain to 0xeB262928D55A92f2EAac946807CeC4d80E9EdD6B
+Include X-402-Proof header with transaction hash.
+
+## Pricing
+
+All prices in USDC on Base chain (8453):
+- Halal Screening: $0.01 per request
+- Web Search: $0.01 per request
+- Code Analysis: $0.05 per request
+- Data Processing: $0.02 per request
+- Translation: $0.01 per request
+- Text Generation: $0.02 per request
+
+## Example
+
+```bash
+# Check halal status of a cryptocurrency
+curl -H "X-402-Proof: 0xYOUR_TX_HASH" "http://178.105.35.170:8080/halal-check?symbol=BTC"
+
+# Search the web
+curl -X POST -H "X-402-Proof: 0xYOUR_TX_HASH" "http://178.105.35.170:8080/v1/search?q=latest+AI+news"
+```
+
+## Links
+
+- OpenAPI: http://178.105.35.170:8080/openapi.json
+- Source Code: http://178.105.35.170:8080/static/x402-halal-api.tar.gz
+- Health: http://178.105.35.170:8080/health

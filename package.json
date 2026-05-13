@@ -1,0 +1,63 @@
+{
+  "name": "@anas-setti/n8n-nodes-x402-api",
+  "version": "1.0.0",
+  "description": "n8n community node for x402 API — pay-per-use AI services via USDC micropayments on Base. Halal Screening, Web Search, Code Analysis, Data Processing, Translation, Text Generation.",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "x402",
+    "usdc",
+    "base",
+    "micropayments",
+    "halal",
+    "web-search",
+    "code-analysis",
+    "translation",
+    "ai",
+    "api",
+    "ethereum",
+    "web3"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "Anas Setti",
+    "email": "anas_setti@gmx.de"
+  },
+  "homepage": "https://github.com/anassetti20-prog/x402-n8n-node",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anassetti20-prog/x402-n8n-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anassetti20-prog/x402-n8n-node/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && node -e \"const fs=require('fs');const path=require('path');const files=['logoLight.svg','logoDark.svg'];const srcDir=path.join('nodes','X402Node');const dstDir=path.join('dist','nodes','X402Node');fs.mkdirSync(dstDir,{recursive:true});let ok=true;for(const f of files){const src=path.join(srcDir,f);const dst=path.join(dstDir,f);if(!fs.existsSync(src)){console.error('ERROR:',f,'not found at',src);ok=false;continue;}fs.copyFileSync(src,dst);console.log('OK: copied',src,'->',dst);}if(!ok) process.exit(1);\"",
+    "dev": "tsc --watch",
+    "test": "echo \"No tests configured\" && exit 1",
+    "release": "npm version patch --force --no-git-tag-version",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run build"
+  },
+  "n8n": {
+    "credentials": [
+      "dist/credentials/X402Api.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/X402Node/X402Node.node.js"
+    ]
+  },
+  "devDependencies": {
+    "n8n-workflow": "^1.80.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

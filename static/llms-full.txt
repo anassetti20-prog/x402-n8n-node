@@ -1,0 +1,19 @@
+# x402 Multi-Service API — Full Documentation
+
+## Overview
+
+A pay-per-request AI service platform running on Base blockchain with USDC micropayments (x402 protocol). 6 services available for AI agents and developers.
+
+**Server**: http://178.105.35.170:8080  
+**Payment Chain**: Base (Chain ID: 8453)  
+**Payment Token**: USDC (0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913)  
+**Server Wallet**: 0xeB262928D55A92f2EAac946807CeC4d80E9EdD6B  
+**Protocol**: HTTP 402 Payment Required (x402)  
+**Source Code**: http://178.105.35.170:8080/static/x402-halal-api.tar.gz
+
+---
+
+## How to Pay
+
+1. Send USDC on **Base Mainnet** (Chain ID: 8453) to `0xeB262928D55A92f2EAac946807CeC4d80E9EdD6B`
+2. Include the transaction hash in your request header: `X-402-Proof: 0x

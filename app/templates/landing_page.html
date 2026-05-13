@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HALIMA Execution API — AI Text Processing in One Call</title>
+<style>
+:root {
+  --bg: #08080c;
+  --surface: #0e0e14;
+  --border: #1a1a2e;
+  --primary: #7c83ff;
+  --primary-dim: #4a4f9e;
+  --green: #4ade80;
+  --yellow: #fbbf24;
+  --red: #f87171;
+  --text: #e0e0e8;
+  --text-dim: #6b7280;
+  --glow: rgba(124, 131, 255, 0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--primary);text-decoration:none;transition:color .2s}
+a:hover{color:#a0a8ff}
+.container{max-width:960px;margin:0 auto;padding:0 24px}
+
+/* ── Nav ── */
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,8,12,.85);backdrop-filter:blur(12px);z-index:100}
+nav .logo{font-size:1.3em;font-weight:700;color:#fff}
+nav .logo span{color:var(--primary)}
+nav .nav-links{display:flex;gap:24px;align-items:center}
+nav .nav-links a{font-size:.9em;color:var(--text-dim)}
+nav .nav-links a:hover{color:#fff}
+nav .nav-cta{background:var(--primary);color:#fff;padding:8px 18px;border-radius:8px;font-size:.85em;font-weight:600}
+nav .nav-cta:hover{background:var(--primary-dim);color:#fff}
+
+/* ── Hero ── */
+.hero{padding:80px 0 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,var(--glow) 0%,transparent 70%);pointer-events:none}
+.hero h1{font-size:3.2em;font-weight:800;line-height:1.15;margin-bottom:16px;background:linear-gradient(135deg,#fff 0%,#a0a8ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 .accent{color:var(--primary);-webkit-text-fill-color:var(--primary)}
+.hero .subtitle{font-size:1.15em;color:var(--text-dim);max-width:560px;margin:0 auto 32px;line-height:1.6}
+.hero-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;padding:12px 28px;border-radius:10px;font-weight:600;font-size:.95em;transition:all .2s;cursor:pointer;border:none}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 4px 20px var(--glow)}
+.btn-primary:hover{background:var(--primary-dim);transform:translateY(-1px)}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--primary);color:#fff}
+
+/* ── Stats Bar ── */
+.stats{display:flex;justify-content:center;gap:48px;padding:32px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.stat{text-align:center}
+.stat .value{font-size:1.8em;font-weight:700;color:#fff}
+.stat .value.green{color:var(--green)}
+.stat .value.yellow{color:var(--yellow)}
+.stat .label{font-size:.8em;color:var(--text-dim);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+
+/* ── Section ── */
+section{padding:64px 0}
+section h2{font-size:1.8em;font-weight:700;margin-bottom:12px;color:#fff}
+section .section-sub{color:var(--text-dim);font-size:1.05em;max-width:600px;margin-bottom:36px;line-height:1.6}
+
+/* ── Why HALIMA ── */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.why-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;transition:border-color .2s}
+.why-card:hover{border-color:var(--primary)}
+.why-card .icon{font-size:1.8em;margin-bottom:12px}
+.why-card h3{font-size:1.1em;font-weight:600;margin-bottom:8px;color:#fff}
+.why-card p{font-size:.9em;color:var(--text-dim);line-height:1.6}
+
+/* ── Tasks ── */
+.tasks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.task-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;text-align:center;transition:all .2s}
+.task-card:hover{border-color:var(--primary);transform:translateY(-2px)}
+.task-card .task-icon{font-size:2em;margin-bottom:8px}
+.task-card h4{font-size:1em;font-weight:600;color:#fff;margin-bottom:4px}
+.task-card p{font-size:.8em;color:var(--text-dim)}
+.task-card .tokens{display:inline-block;margin-top:8px;font-size:.75em;background:var(--bg);padding:3px 10px;border-radius:6px;color:var(--primary);border:1px solid var(--border)}
+
+/* ── Pricing ── */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.price-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;text-align:center;transition:all .2s;position:relative}
+.price-card:hover{border-color:var(--primary)}
+.price-card.popular{border-color:var(--primary);box-shadow:0 0 30px var(--glow)}
+.price-card .badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:.7em;padding:3px 12px;border-radius:6px;font-weight:600;white-space:nowrap}
+.price-card .plan{font-size:.85em;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.price-card .price{font-size:2.2em;font-weight:700;color:#fff}
+.price-card .price span{font-size:.4em;color:var(--text-dim);font-weight:400}
+.price-card .requests{font-size:.9em;color:var(--green);margin:8px 0 16px;font-weight:600}
+.price-card .best-for{font-size:.8em;color:var(--text-dim);margin-bottom:16px}
+.price-card .btn{width:100%;text-align:center}
+
+/* ── Code Example ── */
+.code-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:24px 0}
+.code-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg)}
+.code-tab{padding:10px 20px;font-size:.8em;color:var(--text-dim);cursor:pointer;border:none;background:none;font-family:inherit;border-bottom:2px solid transparent;transition:all .2s}
+.code-tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+.code-tab:hover{color:#fff}
+.code-body{padding:20px;overflow-x:auto}
+pre{font-family:'SF Mono','Fira Code','Cascadia Code',monospace;font-size:.82em;line-height:1.6;color:#c0c0c8;margin:0}
+pre .kw{color:var(--primary)}
+pre .str{color:var(--green)}
+pre .cm{color:var(--text-dim)}
+pre .fn{color:var(--yellow)}
+
+/* ── CTA ── */
+.cta-section{text-align:center;padding:80px 0;background:linear-gradient(180deg,transparent 0%,var(--glow) 50%,transparent 100%)}
+.cta-section h2{font-size:2em;margin-bottom:12px}
+.cta-section p{color:var(--text-dim);margin-bottom:28px;font-size:1.05em}
+
+/* ── Footer ── */
+footer{border-top:1px solid var(--border);padding:32px 0;text-align:center;color:var(--text-dim);font-size:.85em}
+footer a{color:var(--text-dim)}
+footer a:hover{color:var(--primary)}
+
+/* ── Responsive ── */
+@media(max-width:640px){
+  .hero h1{font-size:2.2em}
+  .stats{gap:24px}
+  .stat .value{font-size:1.4em}
+  nav .nav-links{display:none}
+  .pricing-grid,.tasks-grid,.why-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="logo">⚡ <span>HALIMA</span> API</div>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#tasks">Tasks</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#quickstart">Quickstart</a>
+    <a href="http://178.105.35.170:8080/docs" class="nav-cta">API Docs →</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>AI Text Processing<br><span class="accent">in One API Call</span></h1>
+  <p class="subtitle">Summarize, classify, rewrite, and extract structured JSON from any text. Powered by DeepSeek V3. Sub-2-second latency. $0.00004 per call.</p>
+  <div class="hero-buttons">
+    <a href="http://178.105.35.170:8080/docs" class="btn btn-primary">Get Started — Free</a>
+    <a href="#quickstart" class="btn btn-secondary">View Examples</a>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="container">
+  <div class="stats">
+    <div class="stat"><div class="value green">1.5s</div><div class="label">Avg Latency</div></div>
+    <div class="stat"><div class="value">$0.00004</div><div class="label">Per Call</div></div>
+    <div class="stat"><div class="value yellow">4</div><div class="label">Task Types</div></div>
+    <div class="stat"><div class="value">99.9%</div><div class="label">Uptime</div></div>
+  </div>
+</div>
+
+<!-- Why HALIMA -->
+<section id="features">
+  <div class="container">
+    <h2>Why HALIMA?</h2>
+    <p class="section-sub">Built for developers who need fast, cheap, reliable text processing without the complexity.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="icon">⚡</div>
+        <h3>Sub-2s Latency</h3>
+        <p>Average 1.5 seconds per request. No batching, no queues — direct inference via DeepSeek V3 on OpenRouter.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon">💰</div>
+        <h3>Ultra-Low Cost</h3>
+        <p>$0.00004 per call. That's 25,000 calls for $1. Free tier gives you 10 calls/day without an API key.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon">🔒</div>
+        <h3>Secure & Compliant</h3>
+        <p>API key auth, rate limiting, daily spend caps. Halal-compliant infrastructure — no Riba, no Gharar.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon">📊</div>
+        <h3>Full Observability</h3>
+        <p>Every request logged with tokens, cost, latency, and status. Track usage in real-time via analytics endpoints.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon">🤖</div>
+        <h3>A2A Protocol</h3>
+        <p>Agent-to-Agent execution support. Your agents can call HALIMA autonomously with prepaid billing accounts.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon">🌐</div>
+        <h3>Open & Simple</h3>
+        <p>One endpoint, four tasks. RESTful JSON API. No SDK required. Works with curl, Python, JavaScript, anything.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Supported Tasks -->
+<section id="tasks">
+  <div class="container">
+    <h2>Supported Tasks</h2>
+    <p class="section-sub">Four task types, each optimized with task-specific prompt templates and token limits.</p>
+    <div class="tasks-grid">
+      <div class="task-card">
+        <div class="task-icon">📝</div>
+        <h4>summarize</h4>
+        <p>Condense long text into a concise summary</p>
+        <span class="tokens">512 tokens</span>
+      </div>
+      <div class="task-card">
+        <div class="task-icon">🏷️</div>
+        <h4>classify</h4>
+        <p>Single category label for any text</p>
+        <span class="tokens">64 tokens</span>
+      </div>
+      <div class="task-card">
+        <div class="task-icon">✏️</div>
+        <h4>rewrite</h4>
+        <p>Professional, clear rewrite</p>
+        <span class="tokens">1024 tokens</span>
+      </div>
+      <div class="task-card">
+        <div class="task-icon">📋</div>
+        <h4>extract_json</h4>
+        <p>Structured data extraction as JSON</p>
+        <span class="tokens">2048 tokens</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quickstart -->
+<section id="quickstart">
+  <div class="container">
+    <h2>Quickstart</h2>
+    <p class="section-sub">From zero to first API call in 30 seconds.</p>
+
+    <div class="code-section">
+      <div class="code-tabs">
+        <button class="code-tab active">1. Get API Key</button>
+        <button class="code-tab">2. Summarize</button>
+        <button class="code-tab">3. Extract JSON</button>
+      </div>
+      <div class="code-body">
+<pre><span class="cm"># Step 1: Register for a free API key</span>
+curl -X POST http://178.105.35.170:8080/register \
+  -H <span class="str">"Content-Type: application/json"</span> \
+  -d <span class="str">'{"email": "you@example.com"}'</span>
+
+<span class="cm"># Response: {"success": true, "api_key": "hk_live_...", "credits": 10}</span>
+
+<span class="cm"># Step 2: Summarize text</span>
+curl -X POST http://178.105.35.170:8080/v1/execute \
+  -H <span class="str">"Content-Type: application/json"</span> \
+  -H <span class="str">"X-API-Key: hk_live_YOUR_KEY"</span> \
+  -d <span class="str">'{
+    "task": "summarize",
+    "text": "Your long text here..."
+  }'</span>
+
+<span class="cm"># Step 3: Extract structured JSON</span>
+curl -X POST http://178.105.35.170:8080/v1/execute \
+  -H <span class="str">"X-API-Key: hk_live_YOUR_KEY"</span> \
+  -d <span class="str">'{
+    "task": "extract_json",
+    "text": "Meeting Jan 15 2026 at 3pm with John about Q1 budget"
+  }'</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing">
+  <div class="container">
+    <h2>Pricing</h2>
+    <p class="section-sub">Start free. Scale when you need to. No hidden fees.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="plan">Free</div>
+        <div class="price">$0<span>/forever</span></div>
+        <div class="requests">10 calls/day</div>
+        <div class="best-for">Testing & prototyping</div>
+        <a href="http://178.105.35.170:8080/docs" class="btn btn-secondary">Start Free</a>
+      </div>
+      <div class="price-card">
+        <div class="plan">Starter</div>
+        <div class="price">$5<span>/500 calls</span></div>
+        <div class="requests">$0.01 per call</div>
+        <div class="best-for">Side projects</div>
+        <a href="http://178.105.35.170:8080/pricing" class="btn btn-secondary">Buy Starter</a>
+      </div>
+      <div class="price-card popular">
+        <div class="badge">Most Popular</div>
+        <div class="plan">Pro</div>
+        <div class="price">$20<span>/3,000 calls</span></div>
+        <div class="requests">$0.007 per call</div>
+        <div class="best-for">Production apps</div>
+        <a href="http://178.105.35.170:8080/pricing" class="btn btn-primary">Buy Pro</a>
+      </div>
+      <div class="price-card">
+        <div class="plan">Enterprise</div>
+        <div class="price">$50<span>/10,000 calls</span></div>
+        <div class="requests">$0.005 per call</div>
+        <div class="best-for">Scale</div>
+        <a href="http://178.105.35.170:8080/pricing" class="btn btn-secondary">Buy Enterprise</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Ready to build?</h2>
+    <p>Get your free API key and make your first call in under 30 seconds.</p>
+    <a href="http://178.105.35.170:8080/docs" class="btn btn-primary">Get Started — It's Free</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p>⚡ HALIMA Execution API v1.0 — Built by <a href="#">Anas Setti</a></p>
+    <p style="margin-top:8px">
+      <a href="http://178.105.35.170:8080/docs">Docs</a> ·
+      <a href="http://178.105.35.170:8080/health">Health</a> ·
+      <a href="http://178.105.35.170:8080/v1/execute/health">API Health</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

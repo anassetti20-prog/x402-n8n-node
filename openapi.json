@@ -1,0 +1,407 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "x402 Multi-Service API",
+    "version": "2.0.0",
+    "description": "Pay-per-request AI services via USDC micropayments on Base blockchain.\n\n**Payment**: Send USDC on Base (Chain ID: 8453) to `0xeB262928D55A92f2EAac946807CeC4d80E9EdD6B`, then include `X-402-Proof` header with your transaction hash.\n\n**Services available**:\n- Halal Screening ($0.01)\n- Web Search ($0.01)\n- Code Analysis ($0.05)\n- Data Processing ($0.02)\n- Translation ($0.01)\n- Text Generation ($0.02)",
+    "contact": {
+      "name": "x402 API Server",
+      "url": "http://178.105.35.170:8080"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://178.105.35.170:8080",
+      "description": "x402 Multi-Service API Server"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "API Overview",
+        "description": "Returns all available services and payment info",
+        "responses": {
+          "200": {
+            "description": "Service overview"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health Check",
+        "description": "Check API and wallet health status",
+        "responses": {
+          "200": {
+            "description": "Health status"
+          }
+        }
+      }
+    },
+    "/wallet": {
+      "get": {
+        "summary": "Wallet Info",
+        "description": "Get server wallet address and USDC balance",
+        "responses": {
+          "200": {
+            "description": "Wallet information"
+          }
+        }
+      }
+    },
+    "/list": {
+      "get": {
+        "summary": "Halal Coin List",
+        "description": "List all known halal and haram cryptocurrencies",
+        "responses": {
+          "200": {
+            "description": "Coin database"
+          }
+        }
+      }
+    },
+    "/v1/services": {
+      "get": {
+        "summary": "All Services",
+        "description": "List all x402 paid services with pricing and request counts",
+        "responses": {
+          "200": {
+            "description": "Services list"
+          }
+        }
+      }
+    },
+    "/halal-check": {
+      "get": {
+        "summary": "Halal Screening ($0.01)",
+        "description": "Check if a cryptocurrency is Sharia-compliant. Requires x402 payment.",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Cryptocurrency symbol (e.g., BTC, ETH, ADA)"
+          }
+        ],
+        "headers": {
+          "X-402-Proof": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "USDC transaction hash on Base chain"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Halal check result"
+          },
+          "402": {
+            "description": "Payment required - includes x402 headers"
+          }
+        }
+      }
+    },
+    "/v1/search": {
+      "post": {
+        "summary": "Web Search ($0.01)",
+        "description": "Search the web for information. Requires x402 payment.",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search query"
+          },
+          {
+            "name": "max_results",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 5
+            },
+            "description": "Maximum results (1-20)"
+          }
+        ],
+        "headers": {
+          "X-402-Proof": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "USDC transaction hash on Base chain"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search results"
+          },
+          "402": {
+            "description": "Payment required"
+          }
+        }
+      }
+    },
+    "/v1/analyze-code": {
+      "post": {
+        "summary": "Code Analysis ($0.05)",
+        "description": "Analyze source code for bugs, security issues, and style problems. Requires x402 payment.",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Source code to analyze"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "python",
+              "enum": [
+                "python",
+                "javascript"
+              ]
+            },
+            "description": "Programming language"
+          },
+          {
+            "name": "analysis_type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "bugs",
+              "enum": [
+                "bugs",
+                "security",
+                "style",
+                "all"
+              ]
+            },
+            "description": "Type of analysis"
+          }
+        ],
+        "headers": {
+          "X-402-Proof": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "USDC transaction hash on Base chain"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Analysis results with issues and score"
+          },
+          "402": {
+            "description": "Payment required"
+          }
+        }
+      }
+    },
+    "/v1/process-data": {
+      "post": {
+        "summary": "Data Processing ($0.02)",
+        "description": "Transform, filter, validate, or summarize structured data (JSON/CSV). Requires x402 payment.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Data to process (JSON or CSV string)"
+          },
+          {
+            "name": "operation",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "transform",
+              "enum": [
+                "transform",
+                "filter",
+                "validate",
+                "summarize",
+                "convert"
+              ]
+            },
+            "description": "Processing operation"
+          },
+          {
+            "name": "input_format",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "json",
+              "enum": [
+                "json",
+                "csv"
+              ]
+            },
+            "description": "Input data format"
+          },
+          {
+            "name": "filter_key",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Key to filter on (for filter operation)"
+          },
+          {
+            "name": "filter_value",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Value to filter by (for filter operation)"
+          }
+        ],
+        "headers": {
+          "X-402-Proof": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "USDC transaction hash on Base chain"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Processed data"
+          },
+          "402": {
+            "description": "Payment required"
+          }
+        }
+      }
+    },
+    "/v1/translate": {
+      "post": {
+        "summary": "Translation ($0.01)",
+        "description": "Translate text between languages. Requires x402 payment.",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Text to translate"
+          },
+          {
+            "name": "source_lang",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "auto"
+            },
+            "description": "Source language code (e.g., en, de, fr, es, auto)"
+          },
+          {
+            "name": "target_lang",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "de"
+            },
+            "description": "Target language code (e.g., en, de, fr, es)"
+          }
+        ],
+        "headers": {
+          "X-402-Proof": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "USDC transaction hash on Base chain"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Translated text"
+          },
+          "402": {
+            "description": "Payment required"
+          }
+        }
+      }
+    },
+    "/v1/generate-text": {
+      "post": {
+        "summary": "Text Generation ($0.02)",
+        "description": "Generate AI text in various styles. Uses OpenRouter AI. Requires x402 payment.",
+        "parameters": [
+          {
+            "name": "prompt",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Text prompt for generation"
+          },
+          {
+            "name": "max_tokens",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 200
+            },
+            "description": "Maximum tokens to generate"
+          },
+          {
+            "name": "temperature",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "default": 0.7
+            },
+            "description": "Creativity (0.0-1.0)"
+          },
+          {
+            "name": "style",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "general",
+              "enum": [
+                "general",
+                "creative",
+                "professional",
+                "technical",
+                "marketing"
+              ]
+            },
+            "description": "Writing style"
+          }
+        ],
+        "headers": {
+          "X-402-Proof": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "USDC transaction hash on Base chain"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Generated text"
+          },
+          "402": {
+            "description": "Payment required"
+          }
+        }
+      }
+    }
+  }
+}
