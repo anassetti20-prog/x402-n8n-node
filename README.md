@@ -1,34 +1,34 @@
-# ⚡ HALIMA Execution API
+# HALIMA Execution API
 
 **AI-powered text processing in one API call. Sub-2s latency. $0.00004/call.**
 
-[![Status](https://img.shields.io/badge/status-live-brightgreen)](http://178.105.35.170:8080/health)
-[![Latency](https://img.shields.io/badge/latency-~1.5s-blue)](http://178.105.35.170:8080/v1/execute/health)
-[![Cost](https://img.shields.io/badge/cost-$0.00004/call-orange)](http://178.105.35.170:8080/pricing)
-[![Model](https://img.shields.io/badge/model-DeepSeek%20V3-purple)](http://178.105.35.170:8080/v1/execute/health)
-[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green.svg)](https://fastapi.tiangolo.com)
-[![License](https://img.shields.io/badge/license-MIT-white.svg)](LICENSE)
+![Status](https://img.shields.io/badge/status-live-brightgreen)
+![Latency](https://img.shields.io/badge/latency-~1.5s-blue)
+![Cost](https://img.shields.io/badge/cost-$0.00004/call-orange)
+![Model](https://img.shields.io/badge/model-DeepSeek_V3-purple)
+![Python](https://img.shields.io/badge/python-3.11+-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green)
+![License](https://img.shields.io/badge/license-MIT-white)
 
 ---
 
-## 📖 Table of Contents
+## Table of Contents
 
-- [Features](#-features)
-- [Quickstart](#-quickstart)
-- [Installation](#-installation)
-- [API Reference](#-api-reference)
-- [Supported Tasks](#-supported-tasks)
-- [Benchmarks](#-benchmarks)
-- [Pricing](#-pricing)
-- [Architecture](#-architecture)
-- [FAQ](#-faq)
-- [Roadmap](#-roadmap)
-- [License](#-license)
+- [Features](#features)
+- [Quickstart](#quickstart)
+- [Installation](#installation)
+- [API Reference](#api-reference)
+- [Supported Tasks](#supported-tasks)
+- [Benchmarks](#benchmarks)
+- [Pricing](#pricing)
+- [Architecture](#architecture)
+- [FAQ](#faq)
+- [Roadmap](#roadmap)
+- [License](#license)
 
 ---
 
-## ✨ Features
+## Features
 
 | Feature | Description |
 |---------|-------------|
@@ -40,12 +40,11 @@
 | **A2A Protocol** | Agent-to-Agent execution with autonomous billing |
 | **Full Observability** | Request logging with tokens, cost, latency |
 | **Rate Limiting** | 30 req/min per agent, daily spend caps |
-| **EU Hosting** | Hetzner Germany — GDPR-friendly |
-| **Halal Compliant** | No Riba, no Gharar, no Haram |
+| **EU Hosting** | Hetzner Germany -- GDPR-friendly |
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Get a Free API Key
 
@@ -56,10 +55,11 @@ curl -X POST http://178.105.35.170:8080/register \
 ```
 
 Response:
+
 ```json
 {
   "success": true,
-  "api_key": "hk_live_a1b2c3d4e5f6...",
+  "api_key": "hk_live_a1b2c3d4e5f6g7h8i9j0",
   "credits": 10,
   "expires": null
 }
@@ -70,7 +70,7 @@ Response:
 ```bash
 curl -X POST http://178.105.35.170:8080/v1/execute \
   -H "Content-Type: application/json" \
-  -H "X-API-Key: hk_live_a1b2c3d4e5f6..." \
+  -H "X-API-Key: hk_live_a1b2c3d4e5f6g7h8i9j0" \
   -d '{
     "task": "summarize",
     "text": "Your long text here. The API returns a concise summary."
@@ -78,10 +78,11 @@ curl -X POST http://178.105.35.170:8080/v1/execute \
 ```
 
 Response:
+
 ```json
 {
   "task": "summarize",
-  "result": "Concise summary of your text...",
+  "result": "Concise summary of your text.",
   "usage": {
     "tokens": 70,
     "cost_usd": 0.000014,
@@ -102,7 +103,7 @@ curl -X POST http://178.105.35.170:8080/v1/execute \
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### Prerequisites
 
@@ -113,23 +114,17 @@ curl -X POST http://178.105.35.170:8080/v1/execute \
 ### From Source
 
 ```bash
-# Clone
 git clone https://github.com/anassetti/halima-execution-api.git
 cd halima-execution-api
 
-# Virtual environment
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# venv\Scripts\activate   # Windows
+source venv/bin/activate
 
-# Dependencies
 pip install -r requirements.txt
 
-# Configuration
 cp .env.example .env
 # Edit .env and add your OpenRouter API key
 
-# Start server
 ./venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8080
 ```
 
@@ -144,7 +139,6 @@ docker run -p 8080:8080 --env-file .env halima-api
 
 ```bash
 curl http://localhost:8080/v1/execute/health
-# {"status": "ok", "tasks": ["classify", "extract_json", "rewrite", "summarize"], ...}
 ```
 
 ### Environment Variables
@@ -153,18 +147,18 @@ See [`.env.example`](.env.example) for all configuration options.
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `OPENROUTER_API_KEY` | Yes | — | OpenRouter API key |
+| `OPENROUTER_API_KEY` | Yes | -- | OpenRouter API key |
 | `API_HOST` | No | 0.0.0.0 | Server bind address |
 | `API_PORT` | No | 8080 | Server port |
-| `INTERNAL_KEY` | No | — | Service-to-service auth key |
-| `ADMIN_PASSWORD` | No | — | Admin panel password |
-| `WALLET_ADDRESS` | No | — | USDC payment wallet |
+| `INTERNAL_KEY` | No | -- | Service-to-service auth key |
+| `ADMIN_PASSWORD` | No | -- | Admin panel password |
+| `WALLET_ADDRESS` | No | -- | USDC payment wallet |
 | `BASE_CHAIN_ID` | No | 8453 | Base chain ID |
-| `USDC_CONTRACT_ADDRESS` | No | — | USDC contract on Base |
+| `USDC_CONTRACT_ADDRESS` | No | -- | USDC contract on Base |
 
 ---
 
-## 📡 API Reference
+## API Reference
 
 ### POST `/v1/execute`
 
@@ -184,8 +178,8 @@ Execute a text processing task.
 
 | Field | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
-| `task` | string | Yes | — | `summarize`, `classify`, `rewrite`, or `extract_json` |
-| `text` | string | Yes | — | Input text to process |
+| `task` | string | Yes | -- | `summarize`, `classify`, `rewrite`, or `extract_json` |
+| `text` | string | Yes | -- | Input text to process |
 | `max_tokens` | int | No | Task default | Override max output tokens |
 
 **Response:**
@@ -193,7 +187,7 @@ Execute a text processing task.
 ```json
 {
   "task": "summarize",
-  "result": "The processed output text...",
+  "result": "The processed output text.",
   "usage": {
     "tokens": 156,
     "cost_usd": 0.000031,
@@ -209,7 +203,7 @@ Execute a text processing task.
 | 400 | `{"error": "Invalid task"}` | Check task name |
 | 401 | `{"error": "Unauthorized"}` | Verify API key |
 | 402 | `{"error": "Insufficient credits"}` | Buy more credits |
-| 429 | `{"error": "Rate limit exceeded"} | Wait or upgrade |
+| 429 | `{"error": "Rate limit exceeded"}` | Wait or upgrade |
 | 503 | `{"error": "Provider unavailable"}` | Retry later |
 
 ### GET `/v1/execute/health`
@@ -242,9 +236,9 @@ System health check.
 
 ---
 
-## 📋 Supported Tasks
+## Supported Tasks
 
-### `summarize` — Text Summarization
+### `summarize` -- Text Summarization
 
 Condenses long text into a concise summary.
 
@@ -260,7 +254,7 @@ curl -X POST http://178.105.35.170:8080/v1/execute \
 | Avg latency | 1,533 ms |
 | Avg cost | $0.000014 |
 
-### `classify` — Text Classification
+### `classify` -- Text Classification
 
 Returns a single category label for input text.
 
@@ -277,7 +271,7 @@ curl -X POST http://178.105.35.170:8080/v1/execute \
 | Avg cost | $0.000006 |
 | Example output | `"Positive"` |
 
-### `rewrite` — Text Rewriting
+### `rewrite` -- Text Rewriting
 
 Rewrites text clearly and professionally.
 
@@ -293,7 +287,7 @@ curl -X POST http://178.105.35.170:8080/v1/execute \
 | Avg latency | 2,246 ms |
 | Avg cost | $0.000015 |
 
-### `extract_json` — Structured Data Extraction
+### `extract_json` -- Structured Data Extraction
 
 Extracts structured data from text as valid JSON.
 
@@ -308,15 +302,19 @@ curl -X POST http://178.105.35.170:8080/v1/execute \
 | Default max_tokens | 2048 |
 | Avg latency | 2,584 ms |
 | Avg cost | $0.000018 |
-| Example output | `{"date": "January 15 2026", "time": "3pm", "person": "John", "topic": "Q1 budget"}` |
+
+Example output:
+```json
+{"date": "January 15 2026", "time": "3pm", "person": "John", "topic": "Q1 budget"}
+```
 
 ---
 
-## 📊 Benchmarks
+## Benchmarks
 
 All benchmarks measured live on production server (Hetzner, Germany).
 
-### Latency (5-call average)
+### Latency
 
 | Task | Min | Avg | Max | Tokens (avg) |
 |------|-----|-----|-----|-------------|
@@ -325,7 +323,7 @@ All benchmarks measured live on production server (Hetzner, Germany).
 | rewrite | 2,246 ms | 2,400 ms | 2,800 ms | 73 |
 | extract_json | 2,584 ms | 2,600 ms | 3,000 ms | 89 |
 
-### Cost (per call)
+### Cost
 
 | Task | Avg Tokens | Avg Cost | Cost/1K calls |
 |------|-----------|----------|--------------|
@@ -355,7 +353,7 @@ All benchmarks measured live on production server (Hetzner, Germany).
 
 ---
 
-## 💰 Pricing
+## Pricing
 
 | Plan | Price | Calls | Cost/Call | Best For |
 |------|-------|-------|-----------|----------|
@@ -368,55 +366,55 @@ All benchmarks measured live on production server (Hetzner, Germany).
 
 ### How Credits Work
 
-1. Register → get 10 free credits
-2. Buy a plan → credits added to account
+1. Register, get 10 free credits
+2. Buy a plan, credits added to account
 3. Each call costs 1 credit
 4. Check balance: `GET /credits` with `X-API-Key`
 5. Credits never expire
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                        Client Request                           │
-│                POST /v1/execute {task, text}                    │
-└────────────────────────────┬────────────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                       Auth Layer                                │
-│    X-API-Key │ X-Internal-Key │ Free Tier (10/day/IP)          │
-└────────────────────────────┬────────────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                      Task Router                                │
-│   summarize │ classify │ rewrite │ extract_json                │
-│   Applies task-specific prompt template + token limits          │
-└────────────────────────────┬────────────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    Inference Router                             │
-│   DeepSeek V3 (primary) → OpenRouter                            │
-│   Max tokens: 2048 │ Max cost: $0.05 │ Timeout: 60s            │
-└────────────────────────────┬────────────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                     Billing Layer                               │
-│   API Key credits │ A2A billing │ Rate limiter                  │
-│   RPM: 30/min │ Daily spend cap: $5/agent                      │
-└────────────────────────────┬────────────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    Observability                                │
-│   Request ID │ Tokens │ Cost │ Latency │ Status                 │
-│   Logs: /root/.hermes/logs/inference-router.jsonl               │
-└─────────────────────────────────────────────────────────────────┘
++-----------------------------------------------------------------+
+|                        Client Request                           |
+|                POST /v1/execute {task, text}                    |
++----------------------------+------------------------------------+
+                             |
+                             v
++-----------------------------------------------------------------+
+|                       Auth Layer                                |
+|    X-API-Key | X-Internal-Key | Free Tier (10/day/IP)          |
++----------------------------+------------------------------------+
+                             |
+                             v
++-----------------------------------------------------------------+
+|                      Task Router                                |
+|   summarize | classify | rewrite | extract_json                |
+|   Applies task-specific prompt template + token limits          |
++----------------------------+------------------------------------+
+                             |
+                             v
++-----------------------------------------------------------------+
+|                    Inference Router                             |
+|   DeepSeek V3 (primary) -> OpenRouter                           |
+|   Max tokens: 2048 | Max cost: $0.05 | Timeout: 60s            |
++----------------------------+------------------------------------+
+                             |
+                             v
++-----------------------------------------------------------------+
+|                     Billing Layer                               |
+|   API Key credits | A2A billing | Rate limiter                  |
+|   RPM: 30/min | Daily spend cap: $5/agent                      |
++----------------------------+------------------------------------+
+                             |
+                             v
++-----------------------------------------------------------------+
+|                    Observability                                |
+|   Request ID | Tokens | Cost | Latency | Status                 |
+|   Logs: /root/.hermes/logs/inference-router.jsonl               |
++-----------------------------------------------------------------+
 ```
 
 ### Tech Stack
@@ -434,7 +432,7 @@ All benchmarks measured live on production server (Hetzner, Germany).
 
 ---
 
-## ❓ FAQ
+## FAQ
 
 ### General
 
@@ -465,7 +463,7 @@ A: 2048 hard cap. Each task has a lower default (64-2048 depending on task).
 A: Yes. The API is live and stable. Pro and Enterprise plans for production use.
 
 **Q: Is there an SDK?**
-A: No SDK needed — it's a REST API. Works with curl, requests, fetch, httpx, any HTTP client.
+A: No SDK needed -- it's a REST API. Works with curl, requests, fetch, httpx, any HTTP client.
 
 **Q: How do I authenticate?**
 A: Three ways: (1) `X-API-Key` header, (2) `X-Internal-Key` for service-to-service, (3) no header for free tier (10/day/IP).
@@ -497,26 +495,26 @@ A: Yes. Server is in Germany (EU). No personal data stored. Only anonymized usag
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
-- [ ] **More tasks** — translate, sentiment, entity extraction
-- [ ] **Batch endpoint** — process multiple texts in one call
-- [ ] **WebSocket support** — streaming responses
-- [ ] **SDK** — Python and JavaScript client libraries
-- [ ] **Dashboard** — web UI for usage analytics
-- [ ] **RapidAPI listing** — broader distribution
-- [ ] **Custom models** — bring your own OpenRouter model
-- [ ] **Team accounts** — multi-user organizations
+- [ ] **More tasks** -- translate, sentiment, entity extraction
+- [ ] **Batch endpoint** -- process multiple texts in one call
+- [ ] **WebSocket support** -- streaming responses
+- [ ] **SDK** -- Python and JavaScript client libraries
+- [ ] **Dashboard** -- web UI for usage analytics
+- [ ] **RapidAPI listing** -- broader distribution
+- [ ] **Custom models** -- bring your own OpenRouter model
+- [ ] **Team accounts** -- multi-user organizations
 
 ---
 
-## 📜 License
+## License
 
 MIT License. Free for commercial and personal use.
 
 ---
 
-## 🔗 Links
+## Links
 
 - **Live API**: http://178.105.35.170:8080
 - **Documentation**: http://178.105.35.170:8080/docs
@@ -526,4 +524,4 @@ MIT License. Free for commercial and personal use.
 
 ---
 
-Built with ❤️ by [Anas Setti](https://github.com/anassetti) — halal-compliant AI infrastructure.
+Built by [Anas Setti](https://github.com/anassetti) -- halal-compliant AI infrastructure.
